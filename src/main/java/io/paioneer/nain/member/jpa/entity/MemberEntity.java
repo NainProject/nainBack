@@ -60,6 +60,9 @@ public class MemberEntity {
     @Column(name="SNS_ACCESS_TOKEN", nullable = true)
     private String snsAccessToken;
 
+    public MemberEntity(long l) {
+    }
+
     public MemberDto toDto() {
         return MemberDto.builder()
                 .memberNo(this.memberNo)

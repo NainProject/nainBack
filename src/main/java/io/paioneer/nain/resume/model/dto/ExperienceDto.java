@@ -1,7 +1,10 @@
 package io.paioneer.nain.resume.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.paioneer.nain.resume.jpa.entity.ExperienceEntity;
 import io.paioneer.nain.resume.jpa.entity.ResumeEntity;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,37 +17,32 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
 public class ExperienceDto {
     private Long experienceNo;
-    private Long resumeNo; // *entity 연결 유의
-    private String comName;
-    private Long exDuration;
-    private String exCurrent;
+    private Long resumeNo;
+    private String company;
     private String department;
-    private String exPosition;
-    private String responsibilities;
+    private String exPosition;  // 직책
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM")
     private Date startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM")
     private Date endDate;
+    private String current;
+    private String responsibilities;
+    private String exDuration;
 
     public ExperienceEntity toEntity() {
-        ExperienceEntity experienceEntity = ExperienceEntity.builder()
+        return ExperienceEntity.builder()
                 .experienceNo(this.experienceNo)
-                .comName(this.comName)
-                .exDuration(this.exDuration)
-                .exCurrent(this.exCurrent)
+                .resumeNo(this.resumeNo)
+                .company(this.company)
                 .department(this.department)
                 .exPosition(this.exPosition)
-                .responsibilities(this.responsibilities)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
+                .current(this.current)
+                .responsibilities(this.responsibilities)
+                .exDuration(this.exDuration)
                 .build();
-
-        if (this.resumeNo != null) {
-            ResumeEntity resumeEntity = new ResumeEntity();
-            resumeEntity.setResumeNo(this.resumeNo);
-            experienceEntity.setResumeEntity(resumeEntity);
-        }
-        return experienceEntity;
     }
 }
